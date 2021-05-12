@@ -28,13 +28,18 @@ do
       echo "8 - Mostrar SO"
       echo "9 - Serviços do Sistema"
       echo "10- Capturar BANNER com Script nmap"
-      echo "11- Mostrar todos os Compatilhamentos"
+      echo "11- Buscando mais vul ip nos em toda rede"
       echo "12- Enumerando DNS"
       echo "13- Transferencia de Dominio"
       echo "14 -Varrer toda a rede "
       echo "15 -Filtrando somente ips na varredura "
       echo "16 -Novo Menu "
-
+	  echo "17 -Burlando FireWall v1"
+	  echo "18 -Burlando FireWall v2"
+	  echo "19 -Burlando FireWall v3"
+	  echo "20 -Buscando Falha DDos"
+	  echo "21 -Bruter-force em banco MySQL"
+	  
       echo "--------------------"
       read -p "Opção: " OPCAO
 
@@ -145,14 +150,14 @@ do
         nmap $IP -P 25 --script banner.nse
         
         esac
-#Mostrar todos os compartilhamento 
+#Analisando vulnerabilidades em mais enderecos ips na rede 
 
       case "$OPCAO" in
          "11") 
         echo "Informe o endereço a ser pesquisado: "
         read IP
         echo pesquisando endereço $IP
-        nmap --script = nsf -ls $IP 
+        nmap -sS -v -Pn -A --open --script=vuln $ip
      
        esac
 
@@ -200,6 +205,8 @@ do
         nmap -sn $IP | grep 192 | cut -d 'espaço' F S  
      
        esac 
+	   
+#Abrindo menu novamente
 
       case "$OPCAO" in
          "16") 
@@ -209,10 +216,65 @@ do
         ./tools.sh
 
        esac
-             
+	   
+#Burlando FireWall v1
+
+     case "$OPCAO" in
+         "17") 
+        echo "Informe o endereço a ser pesquisado: "
+        read IP
+        echo pesquisando endereço $IP
+        nmap -f -sV -A  $IP
      
-    sleep 15
-    
+       esac              
+#Burlando FireWall v2
+
+     case "$OPCAO" in
+         "18") 
+        echo "Informe o endereço a ser pesquisado: "
+        read IP
+        echo pesquisando endereço $IP
+		nmap -sS -sV -A $IP
+		esac
+		
+#Burlando FireWall v3
+
+     case "$OPCAO" in
+         "19") 
+        echo "Informe o endereço a ser pesquisado: "
+        read IP
+        echo pesquisando endereço $IP
+		nmap -Pn -sV -A $IP
+		
+        esac
+
+
+#Buscando falha DDos
+
+     case "$OPCAO" in
+         "20") 
+        echo "Informe o endereço a ser pesquisado: "
+        read IP
+        echo pesquisando endereço $IP
+		nmap -sU -A -PN -n -pU:19,53,123,161 –script=ntp-monlist,dns-recursion,snmp-sysdescr $IP
+		
+        esac				
+
+
+#Força bruta em banco de dados mysql
+
+     case "$OPCAO" in
+         "21") 
+        echo "Informe o endereço a ser pesquisado: "
+        read IP
+        echo pesquisando endereço $IP
+		nmap --script=mysql-brute $IP
+		
+        esac		
+
+		
+		
+    sleep 25  
 
 
 done
